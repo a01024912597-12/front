@@ -7,7 +7,7 @@ export interface CardType {
   author: string;
 }
 
-const InfoCard = ({ idx, title, content = '(No Content)', author }: CardType) => {
+const InfoCard = ({ idx, title, content = "(No Content)", author }: CardType) => {
   return (
     <div className={styles.card} key={idx}>
       <h2>{title}</h2>

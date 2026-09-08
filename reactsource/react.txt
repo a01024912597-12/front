@@ -23,3 +23,15 @@ http://localhost:4173/
 
 jsx(javascript xml)
 tsx(typescript xml)
+
+정리 명령어 = shift + alt + o
+
+
+기본 : 부모가 렌더링되면 자식도 렌더링 됨
+자식 컴포넌트의 state 값이 변경이 되면 자식 컴포넌트만 리렌더링
+
+부모가 렌더링 될때 자식의 컴포넌트에 영향을 끼치지 않는다면 
+자식의 렌더링을 막는게 효율적 => React.memo()
+
+npm create vite@latest 프로젝트명
+npm install tailwindcss @tailwindcss/vite

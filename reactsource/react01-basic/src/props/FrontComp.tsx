@@ -28,7 +28,11 @@ const FrontComp = ({
   for (let i = 0; i < frontData.length; i++) {
     // 리액트가 리스트를 렌더링 할 때 각 항목을 고유하게 식별할 수 있도록
     // key 속성을 지정해주기
-    liRows.push(<li key={i} onClick={onClick}>{frontData[i]}</li>);
+    liRows.push(
+      <li key={i} onClick={onClick}>
+        {frontData[i]}
+      </li>,
+    );
   }
 
   return (

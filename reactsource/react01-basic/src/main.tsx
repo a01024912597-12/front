@@ -1,8 +1,5 @@
 import { createRoot } from "react-dom/client";
 import "./index.css";
-import Button from "./event/Button.tsx";
-import Button2 from "./event/Button2.tsx";
-import Toolbar from "./event/Toolbar.tsx";
-import Switch from "./event/Switch.tsx";
+import MyComp from "./state/MyComp.tsx";
 
-createRoot(document.getElementById("root")!).render(<Switch />);
+createRoot(document.getElementById("root")!).render(<MyComp />);

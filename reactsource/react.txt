@@ -36,6 +36,7 @@ tsx(typescript xml)
 npm create vite@latest 프로젝트명
 npm install tailwindcss @tailwindcss/vite
 npm install react-router-dom
+npm install react-icons
 
 라우팅 : 링크(페이지 이동)
 <a href = 'index.html'> 인덱스 </a>

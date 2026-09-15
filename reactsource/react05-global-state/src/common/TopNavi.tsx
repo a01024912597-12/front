@@ -1,0 +1,17 @@
+import { NavLink } from "react-router-dom";
+
+const TopNavi = () => {
+  return (
+    <div>
+      <nav className="flex bg-gray-300 p-2 gap-5 h-20 items-center">
+        <NavLink to="/use-State">useState</NavLink>
+        <NavLink to="/use-reducer1">useReducer1</NavLink>
+        <NavLink to="/use-reducer2">useReducer2</NavLink>
+        <NavLink to="/use-reducer3">useReducer3</NavLink>
+        <NavLink to="/use-context">useContext</NavLink>
+      </nav>
+    </div>
+  );
+};
+
+export default TopNavi;

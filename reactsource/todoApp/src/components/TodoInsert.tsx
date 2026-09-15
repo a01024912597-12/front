@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { MdAdd } from "react-icons/md";
-import type { Todo, TodoCreate } from "../types/todo";
+import type { TodoCreate } from "../types/todo";
 
 const TodoInsert = ({ onInsert }: { onInsert: (todo: TodoCreate) => void }) => {
   const [form, setForm] = useState({
@@ -15,7 +15,7 @@ const TodoInsert = ({ onInsert }: { onInsert: (todo: TodoCreate) => void }) => {
     // 폼안의 요소가 checkbox 가 존재하는 경우 type, checked도 가져오기
     const { name, value, type, checked } = e.target;
 
-    // form 안의 title, important 에서 title만 변화
+    // form 안의 title,important 에서 title 만 변화
     // 복사, 변경하고 싶은거 추가
     setForm({
       ...form,
@@ -23,10 +23,12 @@ const TodoInsert = ({ onInsert }: { onInsert: (todo: TodoCreate) => void }) => {
       [name]: type === "checkbox" ? checked : value,
     });
   };
+
   // + 클릭시 form submit 이벤트 발생 처리
   const handleSubmit = (e: React.SubmitEvent) => {
     e.preventDefault();
-    // todo 추가할 때 부모가 내려준 props 호출
+
+    // todo 추가할때 부모가 내려준 props 호출
     onInsert({
       title: title,
       completed: false,

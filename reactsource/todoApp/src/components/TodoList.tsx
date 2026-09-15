@@ -1,7 +1,7 @@
-import type { Todo, TodosProps } from "../types/todo";
+import type { TodosProps } from "../types/todo";
 import TodoListItem from "./TodoListItem";
 
-const TodoList = ({ todos, onDelete, onUpdate}: TodosProps) => {
+const TodoList = ({ todos, onDelete, onUpdate }: TodosProps) => {
   return (
     <div>
       {todos.map((todo) => (

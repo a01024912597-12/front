@@ -24,15 +24,16 @@ export const initialTodos = [
     lastModifiedDate: new Date(),
   },
 ];
-// Todo 타입지정
-// insert 할 때 id 입력안함, 날짜 입력 안함 => 자동으로 생성
+
+// Todo 타입 지정
+// insert 할 때 id 입력안함, 날짜 입력안함 => 자동으로 생성
 export type Todo = {
   id: number;
   title: string;
   completed: boolean;
   important: boolean;
-  createDate?: Date;
-  lastModifiedDate?: Date;
+  createDate: Date;
+  lastModifiedDate: Date;
 };
 
 // TodoList 타입
@@ -41,8 +42,8 @@ export type TodosProps = {
   onDelete: (id: number) => void;
   onUpdate: (id: number) => void;
 };
-// TodoListItem
 
+// TodoListItem 타입
 export type TodoProps = Omit<TodosProps, "todos"> & {
   todo: Todo;
 };

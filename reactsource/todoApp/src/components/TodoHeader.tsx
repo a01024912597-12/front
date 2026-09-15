@@ -1,13 +1,15 @@
-import React from "react";
-
-function TodoHeader() {
+function TodoHeader({ getTodosByCompleted }: { getTodosByCompleted: (completed: string) => void }) {
   console.log("TodoHeader rendered");
   return (
     <div className="flex p-3">
       <span className="flex-1 text-left text-orange-700">중요 일정은 체크</span>
       <div className="shrink-0">
         <span>완료</span>
-        <select name="completed" className="mx-2 rounded border border-gray-400" onChange={(e) => e.target.value}>
+        <select
+          name="completed"
+          className="mx-2 rounded border border-gray-400"
+          onChange={(e) => getTodosByCompleted(e.target.value)}
+        >
           {[
             { label: "전체", value: "" },
             { label: "완료", value: "true" },

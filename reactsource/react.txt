@@ -1,3 +1,12 @@
+
+npm create vite@latest 프로젝트명
+npm install tailwindcss @tailwindcss/vite
+npm install react-router-dom
+npm install react-icons
+npm install @reduxjs/toolkit
+npm install react-redux
+
+
 사전 작업
 node.js 설치
     npm(패키지 관리도구) == 파이썬 pip
@@ -37,6 +46,7 @@ npm create vite@latest 프로젝트명
 npm install tailwindcss @tailwindcss/vite
 npm install react-router-dom
 npm install react-icons
+npm install @reduxjs/toolkit
 
 라우팅 : 링크(페이지 이동)
 <a href = 'index.html'> 인덱스 </a>
@@ -121,3 +131,20 @@ child3,4(child3 자식)
 isOn => 상태변수 공유(true, false)
 child3에서 isOn 출력
 child34 버튼으로 inOn 변경
+
+
+redux
+- useReducer, useContext 대체
+- 리덕스 툴킷 (리덕스 + 리덕스의 복잡한 설정 기능 보완)
+
+리덕스 툴킷
+화면에서 이벤트 발생 -> dispatch() => 리듀서 호출 => 리듀서 액션 분석 후 상태 변경 => 새로운 상태 반환
+=> 화면 렌더링
+
+immer: 알아서 불변성을 지켜줌
+원본 수정 가능
+push()
+
+
+ts -> 소문자로 시작
+tsx -> 대문자로 시작

@@ -1,9 +1,11 @@
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth } from "../common/AuthContext";
+
+import { useAppDispatch, useAppSelector } from "../hooks";
 
 const Home = () => {
-  const { isLoggedin } = useAuth();
-  const navigate = useNavigate();
+  const auth = useAppSelector((state) => state.auth);
+  const dispatch = useAppDispatch();
+
   return (
     <main className="min-h-[calc(100vh-65px)] bg-gray-50">
       <section className="mx-auto flex max-w-5xl flex-col items-center px-6 py-24 text-center">
@@ -30,7 +32,7 @@ const Home = () => {
             로그인
           </Link>
 
-          {isLoggedin && (
+          {auth.id && (
             <>
               <Link
                 to="/mypage"

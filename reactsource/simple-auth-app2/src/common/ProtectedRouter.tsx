@@ -1,10 +1,10 @@
 import { Navigate, Outlet } from "react-router-dom";
-import { useAuth } from "./AuthContext";
+import { useAppSelector } from "../hooks";
 
 const ProtectedRouter = () => {
-  const { isLoggedin } = useAuth();
+  const auth = useAppSelector((state) => state.auth);
 
-  if (!isLoggedin) {
+  if (!auth.id) {
     return <Navigate to={"/login"} replace />;
   }
 

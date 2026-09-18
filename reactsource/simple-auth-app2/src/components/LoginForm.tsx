@@ -1,27 +1,20 @@
 import { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useAuth, type LoginFormState } from "../common/AuthContext";
+import { login } from "../authSlice";
+import { type LoginFormState } from "../authSlice";
+import { useAppDispatch, useAppSelector } from "../hooks";
 
 const LoginForm = () => {
   const [form, setForm] = useState<LoginFormState>({ id: "", password: "" });
-
   const { id, password } = form;
 
-  // 로그인 함수 가져오기(useContext)
+  const auth = useAppSelector((state) => state.auth);
+  const dispatch = useAppDispatch();
 
-  const { login, isLoggedin } = useAuth();
   const navigate = useNavigate();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // id,password 둘 다 적용
-    // 어디서 발생한 이벤트인가
-    const { name, value } = e.target;
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {};
 
-    setForm({
-      ...form,
-      [name]: value,
-    });
-  };
   const handleLogin = (e: React.SubmitEvent) => {
     e.preventDefault();
     // id, password 값이 없다면 alert('아이디나 비밀번호를 확인해주세요')
@@ -30,14 +23,14 @@ const LoginForm = () => {
       return;
     }
     // login() 함수 사용
-    login(id, password);
+    dispatch(login({ id, password }));
 
     // mypage 로 이동하기
     navigate("/mypage");
   };
 
-  if(isLoggedin){
-    return <p>이미 로그인된 상태입니다.</p>
+  if (auth.id) {
+    return <p>이미 로그인된 상태입니다.</p>;
   }
 
   return (

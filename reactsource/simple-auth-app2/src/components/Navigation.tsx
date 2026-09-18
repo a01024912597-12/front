@@ -1,8 +1,11 @@
 import { Link, NavLink, useNavigate } from "react-router-dom";
-import { useAuth } from "../common/AuthContext";
+
+import { useAppDispatch, useAppSelector } from "../hooks";
+import { logout } from "../authSlice";
 
 const Navigation = () => {
-  const { isLoggedin, logout } = useAuth();
+  const auth = useAppSelector((state) => state.auth);
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const getLinkClass = ({ isActive }: { isActive: boolean }) =>
     `transition ${isActive ? "font-semibold text-blue-600" : "text-gray-600 hover:text-blue-600"}`;
@@ -21,7 +24,7 @@ const Navigation = () => {
             홈
           </NavLink>
 
-          {isLoggedin ? (
+          {auth.id ? (
             <>
               <NavLink to="/mypage" className={getLinkClass}>
                 마이페이지
@@ -29,7 +32,7 @@ const Navigation = () => {
 
               <button
                 onClick={() => {
-                  logout();
+                  dispatch(logout());
                   navigate("/");
                 }}
                 className="rounded-lg bg-gray-900 px-4 py-2 font-medium text-white transition hover:bg-gray-700"

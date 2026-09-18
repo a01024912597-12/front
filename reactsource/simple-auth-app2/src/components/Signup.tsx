@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
-import { useAuth, type SignupState } from "../common/AuthContext";
+import type { SignupState } from "../authSlice";
+import { useAppDispatch, useAppSelector } from "../hooks";
 
 const Signup = () => {
   const [form, setForm] = useState<SignupState>({ id: "", password: "", name: "" });
@@ -9,19 +10,12 @@ const Signup = () => {
 
   // 로그인 함수 가져오기(useContext)
 
-  const { isLoggedin } = useAuth();
+  const auth = useAppSelector((state) => state.auth);
+  const dispatch = useAppDispatch();
   const navigate = useNavigate();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    // id,password 둘 다 적용
-    // 어디서 발생한 이벤트인가
-    const { name, value } = e.target;
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {};
 
-    setForm({
-      ...form,
-      [name]: value,
-    });
-  };
   const handleSignup = (e: React.SubmitEvent) => {
     e.preventDefault();
     // id, password 값이 없다면 alert('아이디나 비밀번호를 확인해주세요')
@@ -33,7 +27,7 @@ const Signup = () => {
     // mypage 로 이동하기
     navigate("/login");
   };
-  if (isLoggedin) {
+  if (auth.id) {
     return <Navigate to={"/mypage"} replace />;
   }
 

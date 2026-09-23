@@ -1,7 +1,6 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
-import { deleteBoard, postComment } from "../../apis/boardApi";
+import { deleteBoard } from "../../apis/boardApi";
 import useBoard from "../../hooks/useBoard";
-import type { BoardUpSert } from "../../types/board";
 
 const BoardDetail = () => {
   // 주소줄에 있는 id 가져오기
@@ -18,18 +17,6 @@ const BoardDetail = () => {
       console.log(result);
 
       navigate("/boards");
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const onSubmit = async (board: BoardUpSert) => {
-    if (!id) return;
-    try {
-      const result = await postComment(id, board);
-      console.log(result);
-
-      navigate(`/posts/${id}/comments`);
     } catch (error) {
       console.log(error);
     }
@@ -55,7 +42,7 @@ const BoardDetail = () => {
           <h1 className="text-2xl font-bold">React Router와 Redux Toolkit 질문입니다</h1>
 
           <div className="mt-4 flex items-center gap-4 text-sm text-slate-400">
-            <span className="font-medium text-slate-600">{board?.userid}</span>
+            <span className="font-medium text-slate-600">{board?.userId}</span>
             <span>2026.09.17 14:32</span>
             <span>조회 42</span>
           </div>
@@ -97,23 +84,15 @@ const BoardDetail = () => {
         </div>
       </article>
       {/* 댓글 보여주기  posts/1/comments*/}
-      <div className="mb-5 flex items-end justify-between">
-        <div>
-          <h2 className="text-xl font-bold">댓글</h2>
-          <ul>
-            <li
-              onSubmit={(e) => {
-                e.preventDefault();
-                onSubmit(id);
-              }}
-            ></li>
-          </ul>
-        </div>
-
-        <Link to="/boards" className="text-sm font-medium text-slate-500 hover:text-indigo-600">
-          전체보기 →
-        </Link>
-      </div>
+      <section className="rounded-xl border border-slate-200 bg-white">
+        <ul>
+          {board?.comments.map((comment) => (
+            <li key={comment.id}>
+              {comment.body} - {comment.name}
+            </li>
+          ))}
+        </ul>
+      </section>
     </div>
   );
 };

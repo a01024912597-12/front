@@ -10,14 +10,17 @@ const BoardEdit = () => {
   // 주소줄에 있는 id 가져오기
   const { id } = useParams();
   const navigate = useNavigate();
+  
   const { board, loading } = useBoard(id);
   // 하나 가져와서 화면에 보여주기
 
   const onSubmit = async (board: BoardUpSert) => {
+    console.log("화면단, ", board);
+
     if (!id) return;
     try {
       const result = await putBoard(id, board);
-      console.log(result);
+      console.log("수정된 board", result);
 
       navigate(`/boards/${id}`);
     } catch (error) {

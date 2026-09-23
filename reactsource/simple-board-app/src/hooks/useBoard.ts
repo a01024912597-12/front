@@ -1,18 +1,26 @@
 import { useEffect, useState } from "react";
-import { getBoard } from "../apis/boardApi";
-import type { Board } from "../types/board";
+import { getBoard, getBoardComments } from "../apis/boardApi";
+import type { Board, BoardComment } from "../types/board";
 
 const useBoard = (id: string | undefined) => {
-  const [board, setBoard] = useState<Board | null>(null);
+  const [board, setBoard] = useState<BoardComment | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+
   useEffect(() => {
     const fetchData = async () => {
       try {
-        // id 가 없는 경우
         if (!id) return;
 
         const serverData = await getBoard(id);
-        setBoard(serverData);
+        const serverCommentData = await getBoardComments(id);
+
+        setBoard({
+          userId: serverData.userId,
+          id: serverData.id,
+          title: serverData.title,
+          body: serverData.body,
+          comments: serverCommentData,
+        });
       } catch (error) {
         console.log(error);
       } finally {

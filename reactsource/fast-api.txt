@@ -1,0 +1,15 @@
+서버 프로그램 작성
+파이썬 - fastapi, flask, django
+자바 - spring
+
+python 개발환경
+1) uv
+2) python 다운로드
+
+
+
+## 서버 
+task 폴더 생성
+ - main.py
+ - routers/task.py
+ - models/task.py

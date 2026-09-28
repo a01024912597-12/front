@@ -12,19 +12,12 @@ import { type TodoCreate } from "./types/todo";
 function App() {
   const { todos, loading, fetchData, completedFilter, setCompletedFilter } = useFetch();
 
-  // id 값
-  const nextId = useRef(4);
-
   const onInsert = async (todo: TodoCreate) => {
-    const newTodo = { ...todo, id: nextId.current, createDate: new Date(), lastModifiedDate: new Date() };
-    console.log("newTodo ", newTodo);
-
     // 데이터 삽입 서버 요청
-    const result = await postTodo(newTodo);
-    if (result.message == "success") {
+    const result = await postTodo(todo);
+    if (result.message) {
       // 서버로 전체 데이터 요청
-      fetchData(completedFilter);
-      nextId.current += 1;
+      await fetchData(completedFilter);
     }
   };
 
@@ -32,16 +25,20 @@ function App() {
     // todos 에서 삭제된 id와 동일한 todo 가 아닌 걸 찾아서 setTodos() 변경
     // filter() => 새로운 배열
     const result = await deleteTodo(id);
-    if (result.message === "success") fetchData(completedFilter);
+    if (result.message) {
+      console.log(result.message);
+      await fetchData(completedFilter);
+    }
   };
 
   const onUpdate = async (id: number) => {
     // todos 에서 id 와 동일한 todo 를 찾아서 completed 의 값을 반대로 변경하기
     const updateTodo = todos.find((todo) => todo.id === id);
+
     if (updateTodo) {
-      updateTodo.completed = !updateTodo.completed;
-      const result = await putTodo(String(id), updateTodo);
-      if (result.message === "success") fetchData(completedFilter);
+      const completed = !updateTodo.completed;
+      const result = await putTodo(String(id), { completed });
+      if (result.message) await fetchData(completedFilter);
     }
   };
 

@@ -4,12 +4,10 @@
 import axios from "axios";
 import type { TaskAdd } from "../components/MainTask";
 
-const url = "http://127.0.0.1:8000/tasks";
+const url = "http://127.0.0.1:8000/tasks/";
 
-export const getTasks = async (completedFilter: boolean | null = null) => {
-  const response = await axios.get(`${url}`, {
-    params: completedFilter === null ? {} : { completed: completedFilter },
-  });
+export const getTasks = async (page: number, size: number) => {
+  const response = await axios.get(`${url}`, { params: { page: page, size: size } });
 
   return response.data;
 };

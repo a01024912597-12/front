@@ -24,7 +24,9 @@ const ItemTask = ({ task, onEditTask, onRemoveTask, onToggleTask }: TaskItemProp
         {isEditing ? (
           <input type="text" className="border p-2 w-full" value={task.text} />
         ) : (
-          <span className="text-gray-800">{task.text}</span>
+          <span className="text-gray-800">
+            {task.id}-{text}
+          </span>
         )}
       </div>
       <div className="flex items-center gap-2">

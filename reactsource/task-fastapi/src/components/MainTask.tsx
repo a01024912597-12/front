@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import AddTask from "./AddTask";
 import ListTask from "./ListTask";
 import { deleteTask, getTasks, postTask, putTask } from "../apis/taskApi";
+import { useSearchParams } from "react-router-dom";
+import Pagination from "./Pagination";
 
 export type TaskProps = {
   id: number;
@@ -14,14 +16,36 @@ export type TaskAdd = {
   done: boolean;
 };
 
+export type TaskPageResPonse = {
+  items: TaskProps[];
+  total: number;
+  total_pages: number;
+  page: number;
+  size: number;
+};
+
+const initData = {
+  items: [],
+  total: 0,
+  page: 1,
+  size: 10,
+  total_pages: 0,
+};
+
 const MainTask = () => {
   // 여행계획
-  const [tasks, setTasks] = useState<TaskProps[]>([]);
+  const [tasks, setTasks] = useState<TaskPageResPonse>(initData);
+  const { total_pages } = tasks;
+
+  const [searchParams, setSearchParams] = useSearchParams();
+  const page = Number(searchParams.get("page")) || 1;
+  const size = Number(searchParams.get("size")) || 10;
 
   // 여행계획 추가 함수
   const handleAddTask = async (text: string) => {
-    const newTask = await postTask({ text: text, done: false });
-    setTasks([...tasks, newTask]);
+    await postTask({ text: text, done: false });
+    const tasks = await getTasks(1, size);
+    setTasks(tasks);
   };
   // 여행계획 수정
   const handleUpdateTask = async (task: TaskProps) => {
@@ -37,26 +61,31 @@ const MainTask = () => {
     setTasks(updateTask);
   };
 
+  const onPageChange = async (newPage: number) => {
+    // 사용자가 클릭한 페이지 값으로 페이지 가져오기
+    // const tasks = await getTasks(newPage, size);
+    // setTasks(tasks);
+    setSearchParams({
+      page: String(newPage),
+      size: String(size),
+    });
+  };
   useEffect(() => {
-    const fetchTasks = async () => {
-      const tasks = await getTasks();
+    const fetchTasks = async (page: number, size: number) => {
+      const tasks = await getTasks(page, size);
       setTasks(tasks);
     };
-    fetchTasks();
-  });
+    fetchTasks(page, size);
+  }, [page, size]);
 
   return (
     <div className="mt-10 flex justify-center">
       <div className="w-full max-w-xl space-y-6 rounded-lg bg-white shadow-md">
         <h2 className="text-center text-2xl font-semibold">체코 프라하 여행</h2>
         <AddTask handleAddTask={handleAddTask} />
-        <ListTask
-          tasks={tasks}
-          onEditTask={handleUpdateTask}
-          onRemoveTask={handleRemoveTask}
-
-        />
+        <ListTask tasks={tasks.items} onEditTask={handleUpdateTask} onRemoveTask={handleRemoveTask} />
       </div>
+      <Pagination page={page} totalPages={total_pages} onPageChange={onPageChange} />
     </div>
   );
 };

@@ -6,11 +6,14 @@ import type { TodoCreate, TodoUpsert } from "../types/todo";
 
 const url = "http://127.0.0.1:8000/todos";
 
-export const getTodos = async (completedFilter: boolean | null = null) => {
-  const response = await axios.get(`${url}`, {
-    params: completedFilter === null ? {} : { completed: completedFilter },
-  });
+export const getTodos = async (completedFilter: boolean | null, page: number, size: number) => {
+  const params: { page: number; size: number; completed?: boolean | null } = { page, size };
 
+  if (completedFilter !== null) {
+    params.completed = completedFilter;
+  }
+
+  const response = await axios.get(`${url}/`, { params });
   return response.data;
 };
 
@@ -20,13 +23,10 @@ export const getTodos = async (completedFilter: boolean | null = null) => {
 //   return response.data;
 // };
 
-export const getTodo = async (completedFilter: boolean | null) => {
+export const getTodo = async (id: string) => {
   // completedFilter null => {}
   // completedFilter t/f => {completed:completedFilter}
-
-  const params = completedFilter === null ? {} : { completedFilter };
-
-  const response = await axios.get(`${url}/`, { params });
+  const response = await axios.get(`${url}/${id}`);
   return response.data;
 };
 
@@ -43,7 +43,7 @@ export const deleteTodo = async (id: string) => {
   return response.data;
 };
 // 수정
-export const putTodo = async (id: string, todo: {completed:boolean}) => {
+export const putTodo = async (id: string, todo: { completed: boolean }) => {
   const response = await axios.put(`${url}/${id}`, todo);
   return response.data;
 };

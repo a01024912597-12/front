@@ -1,10 +1,12 @@
 type PaginationProps = {
-  page: number;
+  currentPage: number;
+  start: number;
+  end: number;
   totalPages: number;
   onPageChange: (page: number) => void;
 };
 
-const Pagination = ({ page, totalPages, onPageChange }: PaginationProps) => {
+const Pagination = ({ currentPage, totalPages, onPageChange, start, end }: PaginationProps) => {
   if (totalPages <= 1) return null;
 
   return (
@@ -12,8 +14,8 @@ const Pagination = ({ page, totalPages, onPageChange }: PaginationProps) => {
       {/* 이전 버튼 */}
       <button
         type="button"
-        onClick={() => onPageChange(page - 1)}
-        disabled={page === 1}
+        onClick={() => onPageChange(currentPage - 1)}
+        disabled={currentPage === 1}
         className="
             px-3 py-2
             rounded-md
@@ -30,8 +32,8 @@ const Pagination = ({ page, totalPages, onPageChange }: PaginationProps) => {
       </button>
       {/* 페이지 번호 */}
 
-      {Array.from({ length: totalPages }, (_, index) => {
-        const pageNumber = index + 1;
+      {Array.from({ length: end - start + 1 }, (_, i) => {
+        const pageNumber = i + start;
         return (
           <button
             type="button"
@@ -42,7 +44,7 @@ const Pagination = ({ page, totalPages, onPageChange }: PaginationProps) => {
                       rounded-md
                       text-sm
                       font-medium
-                       ${page === pageNumber ? "bg-blue-600 text-white" : "text-gray-600 hover:bg-gray-100"}   
+                       ${currentPage === pageNumber ? "bg-blue-600 text-white" : "text-gray-600 hover:bg-gray-100"}   
                               `}
           >
             {pageNumber}
@@ -52,8 +54,8 @@ const Pagination = ({ page, totalPages, onPageChange }: PaginationProps) => {
       {/* 다음 버튼 */}
       <button
         type="button"
-        onClick={() => onPageChange(page + 1)}
-        disabled={page === totalPages}
+        onClick={() => onPageChange(currentPage + 1)}
+        disabled={currentPage === totalPages}
         className="
             px-3 py-2
             rounded-md

@@ -1,46 +1,41 @@
-import { Link } from "react-router-dom";
-import { getBoards } from "../../apis/boardApi";
-import { useEffect, useState } from "react";
-import type { Board } from "../../types/board";
+import { Link, useSearchParams } from "react-router-dom";
+import useBoards from "../../hooks/useBoards";
+import Pagination from "../components/Pagination";
 
 const BoardList = () => {
-  const [boards, setBoards] = useState<Board[]>([]);
-  const [loading, setLoading] = useState<boolean>(true);
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const serverData = await getBoards();
-        setBoards(serverData);
-      } catch (error) {
-        console.log(error);
-      } finally {
-        setLoading(false);
-      }
-    };
+  const [searchParams, setSearchParams] = useSearchParams();
+  const currentPage = Number(searchParams.get("page")) || 1;
+  const size = Number(searchParams.get("size")) || 10;
 
-    fetchData();
-  }, []);
+  const { data, loading } = useBoards(currentPage, size);
+  const { total, total_pages } = data;
+
+  // 화면에 보여줄 페이지 개수 제한
+  const pageSize = 5;
+  const startPage = Math.floor((currentPage - 1) / pageSize) * pageSize + 1;
+  const endPage = Math.min(startPage + pageSize - 1, total_pages);
+
   if (loading) {
     return <p>Loading...</p>;
   }
 
-  // 서버  요청
-  getBoards();
-
+  const onPageChange = (page: number) => {
+    setSearchParams({
+      page: String(page),
+      size: String(size),
+    });
+  };
   return (
     <div>
       <div className="mb-8 text-sm text-slate-400">
         Home <span className="mx-2">/</span>
         <span className="text-slate-600">게시판</span>
       </div>
-
       <div className="mb-8 flex items-end justify-between">
         <div>
           <h1 className="text-3xl font-bold tracking-tight">자유게시판</h1>
-
           <p className="mt-2 text-slate-500">다양한 이야기를 자유롭게 나눠보세요.</p>
         </div>
-
         <Link
           to="/boards/write"
           className="rounded-lg bg-indigo-600 px-5 py-2.5 text-sm font-semibold text-white transition hover:bg-indigo-700"
@@ -66,7 +61,7 @@ const BoardList = () => {
 
       {/* Count */}
       <div className="mb-3 text-sm text-slate-500">
-        전체 <span className="font-semibold text-slate-900">128</span>개의 게시글
+        전체 <span className="font-semibold text-slate-900">{total}</span>개의 게시글
       </div>
 
       {/* Table */}
@@ -87,20 +82,17 @@ const BoardList = () => {
           </thead>
 
           <tbody className="divide-y divide-slate-100">
-            {boards.map((post) => (
+            {data.items.map((post) => (
               <tr key={post.id} className="transition hover:bg-slate-50">
-                <td className="px-6 py-5 text-center text-slate-400">{boards.length + 1 - post.id}</td>
-
+                <td className="px-6 py-5 text-center text-slate-400">{post.id}</td>
                 <td className="px-6 py-5">
                   <Link to={`/boards/${post.id}`} className="font-medium text-slate-800 hover:text-indigo-600">
                     {post.title}
                   </Link>
                 </td>
 
-                <td className="px-6 py-5 text-center text-slate-500">{post.userid}</td>
-
-                <td className="px-6 py-5 text-center text-slate-400">2026.09.18</td>
-
+                <td className="px-6 py-5 text-center text-slate-500">{post.user_id}</td>
+                <td className="px-6 py-5 text-center text-slate-400">{post.created_at}</td>
                 <td className="px-6 py-5 text-center text-slate-400">28</td>
               </tr>
             ))}
@@ -109,26 +101,13 @@ const BoardList = () => {
       </div>
 
       {/* Pagination */}
-      <div className="mt-8 flex justify-center gap-1">
-        <button className="flex h-9 w-9 items-center justify-center rounded-lg text-sm text-slate-400 hover:bg-white">
-          ‹
-        </button>
-
-        {[1, 2, 3, 4, 5].map((page) => (
-          <button
-            key={page}
-            className={`flex h-9 w-9 items-center justify-center rounded-lg text-sm ${
-              page === 1 ? "bg-indigo-600 font-semibold text-white" : "text-slate-500 hover:bg-white"
-            }`}
-          >
-            {page}
-          </button>
-        ))}
-
-        <button className="flex h-9 w-9 items-center justify-center rounded-lg text-sm text-slate-400 hover:bg-white">
-          ›
-        </button>
-      </div>
+      <Pagination
+        currentPage={currentPage}
+        totalPages={total_pages}
+        onPageChange={onPageChange}
+        start={startPage}
+        end={endPage}
+      />
     </div>
   );
 };

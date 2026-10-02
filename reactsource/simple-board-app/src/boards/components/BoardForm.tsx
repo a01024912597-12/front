@@ -1,18 +1,17 @@
 import { useState } from "react";
-import type { BoardUpSert } from "../../types/board";
+import type { BoardCreate, BoardUpdate } from "../../types/board";
 import { useNavigate } from "react-router-dom";
 
-const BoardForm = ({ onSubmit, board }: { onSubmit: (board: BoardUpSert) => void; board: BoardUpSert }) => {
+const BoardForm = ({ onSubmit, board }: { onSubmit: (board: BoardUpdate) => void; board?: BoardCreate }) => {
   const [form, setForm] = useState(
     board ?? {
       title: "",
-      body: "",
-      userid: 1,
+      contents: "",
+      user_id: 1,
     },
   );
+  const { title, contents } = form;
   const navigate = useNavigate();
-
-  const { title, body } = form;
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
@@ -65,8 +64,8 @@ const BoardForm = ({ onSubmit, board }: { onSubmit: (board: BoardUpSert) => void
 
           <textarea
             onChange={handleChange}
-            value={body}
-            name="body"
+            value={contents}
+            name="contents"
             rows={5}
             placeholder="내용을 입력하세요"
             className="w-full resize-none rounded-lg border border-slate-200 px-4 py-3 outline-none transition placeholder:text-slate-300 focus:border-indigo-500 focus:ring-2 focus:ring-indigo-100"

@@ -4,8 +4,7 @@ import { createContext, useContext } from "react";
 
 type AuthContextType = {
   id: string;
-  password: string;
-
+  password?: string;
   isLoggedin: boolean;
   login: (id: string, password: string) => void;
   logout: () => void;

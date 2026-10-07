@@ -6,6 +6,8 @@ import BoardList from "./boards/pages/BoardList";
 import BoardWrite from "./boards/pages/BoardWrite";
 import BoardDetail from "./boards/pages/BoardDetail";
 import BoardEdit from "./boards/pages/BoardEdit";
+import LoginPage from "./boards/pages/LoginPage";
+import SignupPage from "./boards/pages/SignupPage";
 
 function App() {
   return (
@@ -18,6 +20,10 @@ function App() {
             <Route path="write" element={<BoardWrite />} />
             <Route path=":id" element={<BoardDetail />} />
             <Route path=":id/edit" element={<BoardEdit />} />
+          </Route>
+          <Route path="/users">
+            <Route path="signin" element={<LoginPage />} />
+            <Route path="signup" element={<SignupPage />} />
           </Route>
         </Route>
       </Routes>

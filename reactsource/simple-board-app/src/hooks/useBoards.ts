@@ -8,9 +8,11 @@ export const initialBoardPage: BoardPageResponse = {
   page: 1,
   size: 10,
   total_pages: 0,
+  criteria: "",
+  keyword: "",
 };
 
-const useBoards = (page: number, size: number) => {
+const useBoards = (page: number, size: number, criteria: string, keyword: string) => {
   const [data, setData] = useState<BoardPageResponse>(initialBoardPage);
   const [loading, setLoading] = useState<boolean>(false);
 
@@ -18,16 +20,16 @@ const useBoards = (page: number, size: number) => {
     const fetchData = async () => {
       try {
         setLoading(true);
-        const serverData = await getBoards(page, size);
+        const serverData = await getBoards(page, size, criteria, keyword);
         setData(serverData);
       } catch (error) {
-        console.log(error);
+        console.log(error); 
       } finally {
         setLoading(false);
       }
     };
     fetchData();
-  }, [page, size]);
+  }, [page, size, criteria, keyword]);
 
   return { data, loading };
 };
